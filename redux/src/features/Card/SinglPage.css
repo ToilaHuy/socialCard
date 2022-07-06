@@ -1,0 +1,128 @@
+.text-header {
+    font-size: 35px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 40px;
+}
+.container-single {
+    width: 1166px;
+    padding: 50px 100px;
+    font-size: 15px;
+    margin: auto;
+}
+.des-single {
+    margin-top: 15px;
+}
+.card-header-single {
+    padding: 0 !important;
+}
+.img-single {
+    width: 800px;
+    height: 350px;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 31px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.MuiCardHeader-title {
+    font-size: 18px !important;
+    margin-bottom: 5px !important;
+    font-weight: bold !important;
+}
+.reactions-single {
+    display: flex;
+}
+.reactions-item {
+    margin-left: 25px;
+    display: flex;
+    align-items: center;
+}
+.reactions-item > img {
+    max-width: 18px;
+    max-height: 18px;
+}
+.counter-reactions {
+    margin-left: 5px;
+}
+.hr-single {
+    background-color: #d9d9d9;
+
+    height: 1px;
+    /* height: 0; */
+    width: 100%;
+    margin: 30px 0;
+}
+.date-list {
+    color: #5b7083;
+    margin-bottom: 5px;
+}
+.list-comment {
+    margin-top: 30px;
+}
+.list-commnet-ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+.list-commnet-item {
+    margin-top: 15px;
+}
+.input-title {
+    color: #000000;
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 15px;
+    margin-left: 183px;
+}
+.hiddenS {
+    border: 1px solid #f3115e !important;
+}
+.hidden {
+    color: #f3115e;
+}
+.hidden > input {
+    border: 1px solid #f3115e !important;
+}
+.hidden > textarea {
+    border: 1px solid #f3115e !important;
+}
+
+.fname1 {
+    width: 800px;
+    outline: none;
+    height: 150px;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-left: 20px;
+}
+.inputbtn {
+    position: absolute;
+    width: 76px;
+    height: 43px;
+    /* UI Properties */
+    border: none;
+    background: #064ebc 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 10px;
+    right: 200px;
+    bottom: 13%;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.avatar {
+    height: 48px;
+    width: 48px;
+    background: transparent 0% 0% no-repeat padding-box;
+
+    border-radius: 50%;
+}

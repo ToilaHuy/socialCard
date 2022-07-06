@@ -9,10 +9,12 @@ const Card = new Schema(
         avatar: { type: String },
         description: { type: String },
         image: { type: String },
+        heart: { type: String },
     },
     {
         timestamps: true,
     },
+    // status : 1  ==> 2 , 2 ==> 1
 );
 
 Card.plugin(mongoose_delete);

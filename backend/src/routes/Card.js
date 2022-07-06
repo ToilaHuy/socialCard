@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { findById } = require('../model/Card');
 const Card = require('../model/Card');
 
 router.post('/add', async (req, res) => {
@@ -24,6 +25,7 @@ router.post('/add', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const getAllCard = await Card.find();
+        console.log(getAllCard);
         return res.status(200).json(getAllCard);
     } catch (error) {
         return res.status(500).json({
@@ -66,6 +68,22 @@ router.put('/:id', async (req, res) => {
         res.status(500).json(err);
     }
 });
+router.post('/heart/:id'),
+    async (req, res) => {
+        try {
+            const updateHeart = await Card.updateOne(
+                { _id: req.params.id },
+                {
+                    $set: {
+                        heart: req.body,
+                    },
+                },
+            );
+            res.status(200).json(updateHeart);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    };
 router.delete('/:id', async (req, res) => {
     try {
         const cardDelete = await Card.findByIdAndDelete({ _id: req.params.id });
@@ -79,6 +97,23 @@ router.delete('/destroy/:id', async (req, res) => {
     try {
         const cardDelete = await Card.delete({ _id: req.params.id });
         res.status(200).json(cardDelete);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+router.put('/revert/:id', async (req, res) => {
+    const card = await Card.findById(req.params.id);
+    try {
+        const updatedCard = await Card.findByIdAndUpdate(
+            req.params.id,
+            {
+                $set: req.body,
+                deleted: card.deleted === false ? true : false,
+            },
+            { new: true },
+        );
+        res.status(200).json(updatedCard);
     } catch (err) {
         res.status(500).json(err);
     }
