@@ -68,22 +68,22 @@ router.put('/:id', async (req, res) => {
         res.status(500).json(err);
     }
 });
-router.post('/heart/:id'),
-    async (req, res) => {
-        try {
-            const updateHeart = await Card.updateOne(
-                { _id: req.params.id },
-                {
-                    $set: {
-                        heart: req.body,
-                    },
-                },
-            );
-            res.status(200).json(updateHeart);
-        } catch (err) {
-            res.status(500).json(err);
-        }
-    };
+router.put('/heart/:id', async (req, res) => {
+    const card = await Card.findById(req.params.id);
+    try {
+        const updatedHeart = await Card.findByIdAndUpdate(
+            req.params.id,
+            {
+                $set: { heart: card.heart + 1 },
+            },
+            { new: true },
+        );
+        console.log('card', card.heart);
+        res.status(200).json(updatedHeart);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 router.delete('/:id', async (req, res) => {
     try {
         const cardDelete = await Card.findByIdAndDelete({ _id: req.params.id });
@@ -108,7 +108,7 @@ router.put('/revert/:id', async (req, res) => {
         const updatedCard = await Card.findByIdAndUpdate(
             req.params.id,
             {
-                $set: req.body,
+                // $set: req.body,
                 deleted: card.deleted === false ? true : false,
             },
             { new: true },

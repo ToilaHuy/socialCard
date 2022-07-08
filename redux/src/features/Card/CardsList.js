@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './CardsEx.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CardsExcerpt from './CardsExcerpt';
-import { selectAllCards } from './cardsSlice';
+import { selectAllCards, fetchCards } from './cardsSlice';
 import { selectSearchPosts } from '../filter/filterSlice';
 import { FilterList } from '../filter/FilterList';
+import { selectRevert } from '../revert/revertSlice';
 // import images from '../../assest/images';
 
 const CardsList = () => {
     const search = useSelector(selectSearchPosts);
     const cards = useSelector(selectAllCards);
+
+    console.log('card ở list', cards);
     let searchByName = cards.filter(
         (card) =>
-            (card?.name?.includes(search.filter) || card?.description?.includes(search.filter)) &&
+            (card?.name?.toLowerCase().includes(search.filter) ||
+                card?.description?.toLowerCase().includes(search.filter)) &&
             card.deleted === false,
     );
     let ListData = [];
@@ -24,6 +28,7 @@ const CardsList = () => {
         ListData = searchByName;
     }
     let content = ListData.map((card) => (card.deleted === false ? <CardsExcerpt key={card._id} card={card} /> : ''));
+
     // let content = ListData.map((card) => <CardsExcerpt key={card._id} card={card} />);
     return <section className="container">{content}</section>;
 };

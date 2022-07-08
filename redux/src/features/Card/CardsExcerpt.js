@@ -15,11 +15,12 @@ import { Link } from 'react-router-dom';
 import image from '../../assest/images/Image 1.png';
 
 const CardsExcerpt = ({ card }) => {
+    // window.location.reload();
     const [edit, setEdit] = useState(false);
     const [remove, setRemove] = useState(false);
     const [deleteId, setDeleteId] = useState('');
     const [editId, setEditId] = useState('');
-    console.log(typeof card);
+
     const handleRemove = (id) => {
         setRemove(true);
         setDeleteId(id);

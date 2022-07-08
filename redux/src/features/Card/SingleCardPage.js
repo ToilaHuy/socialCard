@@ -7,28 +7,46 @@ import cardsApi from '../api/cardsApi';
 import commentsApi from '../api/commentsApi';
 import image from '../../assest/images/Image 1@2x.png';
 import { useNavigate } from 'react-router-dom';
+import { fetchCards } from './cardsSlice';
+import { useDispatch } from 'react-redux';
 
 const SingleCardPage = () => {
     const path = useParams();
+    const dispatch = useDispatch();
 
     const [huy, setHuy] = useState('');
     const [comments, setComments] = useState([]);
     const [saveComment, setSaveComment] = useState('');
     const [hidden, setHidden] = useState();
+    const [count, setCount] = useState(0);
+
     let navigate = useNavigate();
     useEffect(() => {
-        cardsApi
-            .get(path.id)
-            .then((response) => (response.deleted === false ? setHuy(response) : setHuy('')))
-            .catch((error) => console.log(error));
-    }, [saveComment]);
-    const [count, setCount] = useState(Number(huy.heart) || 0);
-    useEffect(() => {
-        commentsApi
-            .getAll(path.id)
-            .then((response) => setComments(response))
-            .catch((error) => console.log(error));
-    }, [saveComment]);
+        getData();
+        getDataCmt();
+
+        function getDataCmt() {
+            commentsApi
+                .getAll(path.id)
+                .then((response) => setComments(response))
+                .catch((error) => console.log(error));
+        }
+        async function getData() {
+            cardsApi
+                .get(path.id)
+                .then((response) =>
+                    response.deleted === false ? setHuy(response) : dispatch(fetchCards()) && navigate('/'),
+                )
+                .catch((error) => console.log(error));
+        }
+    }, [saveComment, huy.heart]);
+
+    // useEffect(() => {
+    //     commentsApi
+    //         .getAll(path.id)
+    //         .then((response) => setComments(response))
+    //         .catch((error) => console.log(error));
+    // }, [saveComment]);
 
     const handleChangeInput = (e) => {
         setHidden('');
@@ -63,9 +81,9 @@ const SingleCardPage = () => {
     // const content = comments.find((user) => user.cardId === path.id);
 
     const handleCounter = async () => {
-        setCount((prev) => prev + 1);
         try {
-            await cardsApi.updateHeart(path.id, count);
+            await cardsApi.updateHeart(path.id);
+            setHuy({ ...huy, heart: huy.heart + 1 });
         } catch (err) {
             console.log(err);
         }
@@ -95,7 +113,7 @@ const SingleCardPage = () => {
             <div className="reactions-single">
                 <div className="reactions-item" onClick={handleCounter}>
                     <img src={heart} alt="" />
-                    <div className="counter-reactions">{count}</div>
+                    <div className="counter-reactions">{huy.heart}</div>
                 </div>
                 <div className="reactions-item">
                     <img src={message} alt="" />

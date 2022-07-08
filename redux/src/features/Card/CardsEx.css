@@ -71,6 +71,8 @@
     -webkit-line-clamp: 3;
     display: -webkit-box;
     -webkit-box-orient: vertical;
+    width: 315px;
+    word-wrap: break-word;
 }
 
 #alert-dialog-title {

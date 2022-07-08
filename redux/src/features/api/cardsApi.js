@@ -3,7 +3,6 @@ import axiosClient from './axiosClient';
 const cardsApi = {
     getAll: () => {
         const url = '/card/';
-        console.log('url', url);
         return axiosClient.get(url);
     },
     get: (id) => {
@@ -15,9 +14,9 @@ const cardsApi = {
         return axiosClient.post(url, data);
     },
     // update
-    updateHeart: (id, data) => {
-        const url = `/heart/${id}`;
-        return axiosClient.post(url, data);
+    updateHeart: (id) => {
+        const url = `/card/heart/${id}`;
+        return axiosClient.put(url);
     },
     updateCard: (id, data) => {
         const url = `/card/${id}`;
@@ -42,6 +41,10 @@ const cardsApi = {
     restoreCard: (id) => {
         const url = `/card/restore/${id}`;
         return axiosClient.patch(url);
+    },
+    revertCard: (id) => {
+        const url = `/card/revert/${id}`;
+        return axiosClient.put(url);
     },
 };
 

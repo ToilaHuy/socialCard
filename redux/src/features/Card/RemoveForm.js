@@ -8,12 +8,14 @@ import images from '../../assest/images';
 import { useDispatch } from 'react-redux';
 import { destroyCard, fetchCards } from './cardsSlice';
 import './CardsEx.css';
+import { addRevert } from '../revert/revertSlice';
 
 const RemoveForm = ({ remove, handleClickClose, deleteId }) => {
     const dispatch = useDispatch();
 
-    const handleClickDelete = async () => {
-        await dispatch(destroyCard(deleteId));
+    const handleClickDelete = () => {
+        dispatch(addRevert(deleteId));
+        dispatch(destroyCard(deleteId));
         handleClickClose();
     };
     return (

@@ -4,7 +4,7 @@ import cardsApi from '../api/cardsApi';
 const initialState = {
     cards: [],
 };
-console.log(initialState.cards);
+
 export const fetchCards = createAsyncThunk('cards/fetchCard', async () => {
     const dataApi = await cardsApi.getAll();
     return dataApi;

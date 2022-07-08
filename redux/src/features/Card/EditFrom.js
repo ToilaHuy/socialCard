@@ -33,10 +33,12 @@ const EditForm = ({ edit, handleClickClose, editId }) => {
     const [hidden3, setHidden3] = useState('');
     const canSave = [avatar, name, description].every(Boolean);
 
-    const [countAvatar, setCountAvatar] = useState(0);
-    const [countImage, setCountImage] = useState(0);
     const [getAvatar, setGetAvatar] = useState('');
     const [getImage, setgetImage] = useState('');
+    const [firtAvatar, setFirtAvatar] = useState('');
+    const [firtImage, setFirtImage] = useState('');
+    const [firtName, setFirtName] = useState('');
+    const [firtDescription, setFirtDescription] = useState('');
 
     useEffect(() => {
         cardsApi
@@ -44,28 +46,46 @@ const EditForm = ({ edit, handleClickClose, editId }) => {
             .then((response) => {
                 setName(response.name);
                 setAvatar(response.avatar);
+                setFirtAvatar(response.avatar);
                 setDescription(response.description);
                 setImage(response.image);
+                setFirtImage(response.image);
+                setFirtName(response.name);
+                setFirtDescription(response.description);
             })
             // .then((response) => console.log(response))
             .catch((error) => console.log(error));
     }, []);
 
-    const handleChangeAvatar = (e) => {
+    const handleChangeAvatar = (file) => {
         setHidden('');
         setSrcimg(images.upload);
-        setAvatar('có ảnh');
-        setCountAvatar((prev) => prev + 1);
-        setGetAvatar(e.target.files[0]);
+        const fileType = file.type;
+        console.log(fileType);
+        if (fileType === 'image/jpeg' || fileType === 'image/png') {
+            setGetAvatar(file);
+            setAvatar(file.name);
+            console.log(getAvatar);
+        } else {
+            setGetAvatar('');
+            setAvatar('');
+            alert('file không hỗ trợ');
+        }
     };
 
-    const handleChangeImage = (e) => {
-        setImage('có ảnh oke rồi nha');
-        setgetImage(e.target.files[0]);
-        setCountImage((prev) => prev + 1);
+    const handleChangeImage = (file) => {
+        const fileType = file.type;
+        if (fileType === 'image/jpeg' || fileType === 'image/png') {
+            setgetImage(file);
+            setImage(file.name);
+            console.log(getImage);
+        } else {
+            setgetImage('');
+            setImage('');
+            alert('file không hỗ trợ');
+        }
     };
-    console.log(countImage);
-    console.log(countAvatar);
+
     const handleInputChange = (e) => {
         if (e.target.name === 'name') {
             setName(e.target.value);
@@ -94,14 +114,14 @@ const EditForm = ({ edit, handleClickClose, editId }) => {
                 formData2.append('upload_preset', 'upload');
                 formData2.append('file', getImage);
                 const [res1, res2] = await Promise.all([
-                    countAvatar > 0
+                    getAvatar
                         ? axios.post('https://api.cloudinary.com/v1_1/dbwudkncb/upload', formData1, {
                               headers: {
                                   'Content-Type': 'multipart/form-data',
                               },
                           })
                         : '',
-                    countImage > 0
+                    getImage
                         ? axios.post('https://api.cloudinary.com/v1_1/dbwudkncb/upload', formData2, {
                               headers: {
                                   'Content-Type': 'multipart/form-data',
@@ -111,13 +131,14 @@ const EditForm = ({ edit, handleClickClose, editId }) => {
                 ]);
                 const newCard = {
                     id: editId,
-                    avatar: countAvatar ? res1.data.url : avatar,
+                    avatar: getAvatar ? res1.data.url : avatar,
                     name: name,
                     description: description,
-                    image: countImage ? res2.data.url : image,
+                    image: getImage ? res2.data.url : image,
                 };
                 await dispatch(editCard(newCard));
-
+                setGetAvatar('');
+                setgetImage('');
                 handleClickClose();
                 console.log('Sửa thành công');
             } catch (error) {
@@ -139,13 +160,27 @@ const EditForm = ({ edit, handleClickClose, editId }) => {
         setHidden('');
         setHidden3('');
         setSrcimg(images.upload);
+        setAvatar(firtAvatar);
+        setImage(firtImage);
+        setName(firtName);
+        setDescription(firtDescription);
     };
 
     return (
         <Dialog
             id="popup-dialog"
             open={edit}
-            onClose={handleClickClose}
+            onClose={() => {
+                handleClickClose();
+                setHidden2('');
+                setHidden('');
+                setHidden3('');
+                setSrcimg(images.upload);
+                setAvatar(firtAvatar);
+                setImage(firtImage);
+                setName(firtName);
+                setDescription(firtDescription);
+            }}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
@@ -164,7 +199,7 @@ const EditForm = ({ edit, handleClickClose, editId }) => {
                                 id="contained-button-file"
                                 type="file"
                                 name="avatar"
-                                onChange={handleChangeAvatar}
+                                onChange={(e) => handleChangeAvatar(e.target.files[0])}
                             />
 
                             <div style={{ height: '20px', display: 'flex' }}>
@@ -216,7 +251,7 @@ const EditForm = ({ edit, handleClickClose, editId }) => {
                                 id="contained-button-file-img"
                                 type="file"
                                 name="image"
-                                onChange={handleChangeImage}
+                                onChange={(e) => handleChangeImage(e.target.files[0])}
                             />
                             <div style={{ height: '20px', display: 'flex' }} component="span">
                                 <img src={images.upload} alt="" />

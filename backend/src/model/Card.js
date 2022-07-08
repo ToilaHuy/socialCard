@@ -9,7 +9,7 @@ const Card = new Schema(
         avatar: { type: String },
         description: { type: String },
         image: { type: String },
-        heart: { type: String },
+        heart: { type: Number, default: 0 },
     },
     {
         timestamps: true,

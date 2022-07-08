@@ -8,13 +8,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import axios from 'axios';
+
 // import { useNavigate } from 'react-router-dom';
 
 import images from '../../assest/images';
 import { useDispatch } from 'react-redux';
 import { addCard } from './cardsSlice';
 
-const AddForm = ({ expanded, handleClickClose }) => {
+const AddForm = ({ expanded, handleClickClose, handleClickAdd }) => {
     // const AddForm = ({ expanded }) => {
     const dispatch = useDispatch();
     // const navigate = useNavigate();
@@ -38,11 +39,10 @@ const AddForm = ({ expanded, handleClickClose }) => {
         setHidden('');
         setSrcimg(images.upload);
 
-        setGetAvatar(file);
         const fileType = file.type;
         console.log(fileType);
         if (fileType === 'image/jpeg' || fileType === 'image/png') {
-            setgetImage(file);
+            setGetAvatar(file);
             setAvatar(file.name);
         } else {
             setGetAvatar('');
@@ -74,7 +74,7 @@ const AddForm = ({ expanded, handleClickClose }) => {
             setHidden3('');
         }
     };
-    console.log(canSave);
+
     async function handleOnsubmit(event) {
         console.log(canSave);
         if (canSave) {
@@ -112,11 +112,13 @@ const AddForm = ({ expanded, handleClickClose }) => {
                     image: res2 ? res2.data.url : '',
                 };
                 dispatch(addCard(newCard));
-                await setName('');
-                await setAvatar('');
-                await setDescription('');
-                await setImage('');
-                await handleClickClose();
+
+                setName('');
+                setAvatar('');
+                setDescription('');
+                setImage('');
+                handleClickAdd();
+                handleClickClose();
                 console.log('thêm thành công');
             } catch (error) {
                 console.log(error);
@@ -140,6 +142,8 @@ const AddForm = ({ expanded, handleClickClose }) => {
         setHidden2('');
         setHidden('');
         setHidden3('');
+        setgetImage('');
+        setGetAvatar('');
         setSrcimg(images.upload);
     };
 
